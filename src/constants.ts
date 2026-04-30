@@ -13,12 +13,12 @@ export const GLOBAL_DATA = {
     fullAddress: "123 หมู่ 5 ต.เมือง จ.ชลบุรี 20000"
   },
   stats: {
-    productionThisMonth: "4,280.00",
-    recIssued: "3,500.00",
-    recSold: "2,800.00",
-    recBalance: "700.00",
-    revenue: "4,200.00",
-    co2Saved: "842.00",
+    productionThisMonth: 4280.00,
+    recIssued: 3500.00,
+    recSold: 2800.00,
+    recBalance: 700.00,
+    revenue: 4200.00,
+    co2Saved: 842.00,
     inverterCount: 2,
     assetCount: 3,
     unit: "kWh"
