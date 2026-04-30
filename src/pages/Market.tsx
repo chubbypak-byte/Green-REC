@@ -59,6 +59,12 @@ export const Market = () => {
     setTimeout(() => setSuccess(false), 3000);
   };
 
+  const handleListNow = (amount: number) => {
+    setActiveTab('sell');
+    setSellAmount(amount.toString());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="space-y-8 pb-10">
       <div className="flex items-center justify-between">
@@ -293,7 +299,10 @@ export const Market = () => {
                                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Unlisted REC</p>
                                  <p className="text-xl font-bold text-pea-green">{Math.floor(asset.production / 10).toLocaleString()} <span className="text-xs font-normal text-slate-400">RECs</span></p>
                               </div>
-                              <button className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-pea-green transition-all">
+                              <button 
+                                onClick={() => handleListNow(Math.floor(asset.production / 10))}
+                                className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-pea-green transition-all"
+                              >
                                  List Now
                               </button>
                            </div>

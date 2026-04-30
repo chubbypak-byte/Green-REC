@@ -11,6 +11,7 @@ import { RegisterAsset } from './pages/RegisterAsset';
 import { Login } from './pages/Login';
 import { Profile } from './pages/Profile';
 import { AssetDetails } from './pages/AssetDetails';
+import { AssetHistory } from './pages/AssetHistory';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/producers" element={<Producers />} />
           <Route path="/assets/:id" element={<AssetDetails />} />
+          <Route path="/assets/:id/history" element={<AssetHistory />} />
           <Route path="/certificates" element={<Certificates />} />
           <Route path="/market" element={<Market />} />
           <Route path="/reports" element={<Reports />} />

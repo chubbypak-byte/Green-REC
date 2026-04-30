@@ -159,7 +159,7 @@ export const Producers = () => {
 
               <div className="flex gap-3">
                 <button 
-                  onClick={() => navigate('/certificates')}
+                  onClick={() => navigate(`/assets/${asset.id}/history`)}
                   className="flex-1 py-4 rounded-2xl bg-white border border-slate-100 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm"
                 >
                    <Award className="w-4 h-4" />
