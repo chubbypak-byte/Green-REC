@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, TreeDeciduous, Wind, CloudRain, ArrowRight, Download, ShieldCheck, Clock } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Leaf, TreeDeciduous, Wind, CloudRain, ArrowRight, Download, ShieldCheck, Clock, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   AreaChart, 
   Area, 
@@ -24,6 +24,23 @@ const data = [
 
 export const Reports = () => {
   const navigate = useNavigate();
+  const [downloading, setDownloading] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  const handleDownload = () => {
+    setDownloading(true);
+    
+    // Simulate download delay
+    setTimeout(() => {
+      setDownloading(false);
+      setDownloadSuccess(true);
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setDownloadSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
 
   return (
     <div className="space-y-8 pb-20">
@@ -33,14 +50,21 @@ export const Reports = () => {
           <p className="text-slate-500">รายงานการผลิต การออกใบรับรอง และความยั่งยืนของคุณ</p>
         </div>
         <button 
-          onClick={() => {
-            console.log("Exporting Excel...");
-            // In a real app, this would trigger a download
-          }}
-          className="flex items-center gap-2 bg-white text-pea-green border border-pea-green px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-50 transition-colors shadow-sm"
+          onClick={handleDownload}
+          disabled={downloading}
+          className="flex items-center gap-2 bg-white text-pea-green border border-pea-green px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-50 transition-colors shadow-sm disabled:opacity-50 min-w-[200px] justify-center"
         >
-          <Download className="w-4 h-4" />
-          Export Excel Report
+          {downloading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-pea-green/30 border-t-pea-green rounded-full animate-spin"></div>
+              กำลังเตรียมไฟล์...
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              Export Excel Report
+            </>
+          )}
         </button>
       </div>
 
@@ -182,6 +206,25 @@ export const Reports = () => {
           </ResponsiveContainer>
         </div>
       </div>
+
+      <AnimatePresence>
+        {downloadSuccess && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed bottom-12 right-12 bg-slate-900 text-white p-6 rounded-[32px] shadow-2xl flex items-center gap-5 z-[100] border border-white/10"
+          >
+            <div className="w-12 h-12 bg-pea-green rounded-full flex items-center justify-center shadow-lg shadow-emerald-900/20">
+               <CheckCircle2 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-extrabold tracking-tight">ดาวน์โหลดเสร็จสิ้น!</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Report.xlsx saved to your device.</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
