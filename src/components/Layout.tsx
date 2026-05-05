@@ -7,6 +7,27 @@ import { useLocation } from 'react-router-dom';
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
+  // Hide the sidebar and layout wrappers for auth-related pages
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/registration';
+
+  if (isAuthPage) {
+    return (
+      <div className="min-h-screen bg-slate-50 font-sans">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans flex">
       <Sidebar />
