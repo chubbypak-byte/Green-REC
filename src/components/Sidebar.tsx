@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Factory, 
@@ -27,6 +27,8 @@ const navItems = [
 ];
 
 export const Sidebar = () => {
+  const navigate = useNavigate();
+
   return (
     <aside className="w-72 h-screen sidebar-gradient text-white flex flex-col fixed left-0 top-0 z-50">
       <div className="p-8">
@@ -83,7 +85,7 @@ export const Sidebar = () => {
           </div>
         </NavLink>
         <button 
-          onClick={() => window.location.href = '/login'}
+          onClick={() => navigate('/login')}
           className="w-full flex items-center gap-3 px-4 py-2 text-xs font-medium text-emerald-200 hover:text-white transition-colors"
         >
           <LogOut className="w-4 h-4" />
