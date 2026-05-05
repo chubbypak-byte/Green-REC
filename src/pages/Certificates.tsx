@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, CheckCircle2, Clock, ShieldCheck, Download, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const certificates = [
   { id: 'REC-2024-001', month: 'January 2024', amount: 120, status: 'Issued', date: '15/02/2024' },
@@ -11,6 +12,23 @@ const certificates = [
 
 export const Certificates = () => {
   const navigate = useNavigate();
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  const handleDownload = (id: string) => {
+    setDownloadingId(id);
+    
+    // Simulate download delay
+    setTimeout(() => {
+      setDownloadingId(null);
+      setDownloadSuccess(true);
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setDownloadSuccess(false);
+      }, 3000);
+    }, 1500);
+  };
 
   return (
     <div className="space-y-8 pb-10">
@@ -69,12 +87,29 @@ export const Certificates = () => {
                </div>
                
                <div className="flex gap-2">
-                  <button className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-100 hover:text-slate-600 transition-all" title="View Source">
+                  <button 
+                    onClick={() => navigate(`/certificates/${cert.id}`)}
+                    className="p-3 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-100 hover:text-pea-green transition-all" 
+                    title="View Certificate"
+                  >
                     <ExternalLink className="w-4 h-4" />
                   </button>
-                  <button className="flex items-center gap-2 px-6 py-3 bg-pea-green text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-emerald-800 transition-all shadow-lg shadow-emerald-900/10 disabled:opacity-30" disabled={cert.status !== 'Issued'}>
-                    <Download className="w-4 h-4" />
-                    Certificate
+                  <button 
+                    onClick={() => handleDownload(cert.id)}
+                    disabled={cert.status !== 'Issued' || downloadingId === cert.id}
+                    className="flex items-center gap-2 px-6 py-3 bg-pea-green text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-emerald-800 transition-all shadow-lg shadow-emerald-900/10 disabled:opacity-30 disabled:pointer-events-none w-[160px] justify-center" 
+                  >
+                    {downloadingId === cert.id ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Downloading</span>
+                      </div>
+                    ) : (
+                      <>
+                        <Download className="w-4 h-4" />
+                        <span>Certificate</span>
+                      </>
+                    )}
                   </button>
                </div>
             </div>
@@ -104,6 +139,25 @@ export const Certificates = () => {
             </button>
          </div>
       </div>
+
+      <AnimatePresence>
+        {downloadSuccess && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed bottom-12 right-12 bg-slate-900 text-white p-6 rounded-[32px] shadow-2xl flex items-center gap-5 z-[100] border border-white/10"
+          >
+            <div className="w-12 h-12 bg-pea-green rounded-full flex items-center justify-center shadow-lg shadow-emerald-900/20">
+               <CheckCircle2 className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-extrabold tracking-tight">ดาวน์โหลดเสร็จสิ้น!</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Certificate downloaded to your device.</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

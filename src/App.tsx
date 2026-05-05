@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Overview } from './pages/Overview';
 import { Producers } from './pages/Producers';
 import { Certificates } from './pages/Certificates';
+import { CertificateViewer } from './pages/CertificateViewer';
 import { Market } from './pages/Market';
 import { Reports } from './pages/Reports';
 import { Registration } from './pages/Registration';
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/assets/:id" element={<AssetDetails />} />
           <Route path="/assets/:id/history" element={<AssetHistory />} />
           <Route path="/certificates" element={<Certificates />} />
+          <Route path="/certificates/:id" element={<CertificateViewer />} />
           <Route path="/market" element={<Market />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/registration" element={<Registration />} />
