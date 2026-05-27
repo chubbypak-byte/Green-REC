@@ -140,10 +140,17 @@ export const Producers = () => {
                   <ChevronRight className="w-5 h-5 opacity-0 -translate-x-2 group-hover/content:opacity-100 group-hover/content:translate-x-0 transition-all" />
                 </h3>
                 <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider">{asset.type}</p>
-                <p className="text-sm font-medium text-slate-500 mt-2 flex items-center gap-1.5 truncate" title={asset.location}>
-                   <MapPin className="w-4 h-4 flex-shrink-0 text-slate-300" />
+                <a 
+                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(asset.location)}`}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   onClick={(e) => e.stopPropagation()}
+                   className="text-sm font-medium text-slate-500 mt-2 flex items-center gap-1.5 truncate hover:text-pea-green transition-colors inline-flex" 
+                   title={asset.location}
+                >
+                   <MapPin className="w-4 h-4 flex-shrink-0" />
                    <span className="truncate">{asset.location}</span>
-                </p>
+                </a>
               </div>
 
               <div className="grid grid-cols-2 gap-4 py-8 border-y border-slate-50">

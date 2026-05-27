@@ -161,7 +161,14 @@ export const AssetDetails = () => {
                    <Navigation className="w-3 h-3 text-rose-500" />
                    พิกัด GPS (Latitude/Longitude)
                 </p>
-                <p className="text-lg font-bold text-slate-900">{asset.connection.gps}</p>
+                <a 
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(asset.connection.gps)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-bold text-slate-900 overflow-hidden text-ellipsis hover:text-pea-green transition-colors inline-block"
+                >
+                  {asset.connection.gps}
+                </a>
               </div>
 
               <div className="space-y-1">
@@ -169,7 +176,14 @@ export const AssetDetails = () => {
                    <MapPin className="w-3 h-3 text-emerald-500" />
                    ที่อยู่ติดตั้ง (Installation Address)
                 </p>
-                <p className="text-lg font-bold text-slate-900">{asset.location}</p>
+                <a 
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(asset.location)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-bold text-slate-900 overflow-hidden text-ellipsis hover:text-pea-green transition-colors inline-block"
+                >
+                  {asset.location}
+                </a>
               </div>
 
               <div className="space-y-1">

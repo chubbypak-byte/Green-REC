@@ -103,10 +103,10 @@ export const Profile = () => {
               {user.hasAssets ? (
                 <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-pea-green shadow-sm text-xl font-bold">1</div>
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-pea-green shadow-sm text-xl font-bold">{GLOBAL_DATA.assets.length}</div>
                     <div>
                       <p className="font-bold text-slate-900">อุปกรณ์ที่ลงทะเบียนแล้ว</p>
-                      <p className="text-xs text-slate-500">ระบบตรวจพบอุปกรณ์ Solar Rooftop 1 รายการ</p>
+                      <p className="text-xs text-slate-500">ระบบตรวจพบอุปกรณ์ผลิตไฟฟ้า {GLOBAL_DATA.assets.length} รายการ</p>
                     </div>
                   </div>
                   <button onClick={() => navigate('/producers')} className="px-6 py-2 bg-pea-green text-white rounded-xl font-bold text-xs uppercase tracking-widest">

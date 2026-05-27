@@ -4,11 +4,11 @@ import {
   LayoutDashboard, 
   Factory, 
   Award, 
-  ShoppingCart, 
   BarChart3, 
   UserCircle,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  PhoneCall
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -22,8 +22,8 @@ const navItems = [
   { icon: LayoutDashboard, label: 'ภาพรวม', path: '/', en: 'Overview' },
   { icon: Factory, label: 'ผู้ผลิต', path: '/producers', en: 'Producers' },
   { icon: Award, label: 'ใบรับรอง', path: '/certificates', en: 'Certificates' },
-  { icon: ShoppingCart, label: 'ตลาด', path: '/market', en: 'Market' },
   { icon: BarChart3, label: 'รายงาน', path: '/reports', en: 'Reports' },
+  { icon: PhoneCall, label: 'ติดต่อเรา', path: '/contact', en: 'Contact' },
 ];
 
 export const Sidebar = () => {

@@ -76,16 +76,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </main>
 
-      {/* Alert Bar */}
-      <div className="fixed bottom-0 right-0 left-72 bg-emerald-900/90 backdrop-blur text-white py-2 px-8 flex items-center justify-between z-50">
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-amber-400 animate-bounce"></div>
-          <p className="text-xs font-medium">คุณมีใบรับรอง 3 รายการที่รอการตรวจสอบ (Waiting for Verify)</p>
-        </div>
-        <button className="text-[10px] font-bold uppercase tracking-widest border border-white/30 px-3 py-1 rounded hover:bg-white hover:text-emerald-900 transition-all">
-          View Details
-        </button>
-      </div>
     </div>
   );
 };

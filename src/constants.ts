@@ -13,26 +13,26 @@ export const GLOBAL_DATA = {
     fullAddress: "123 หมู่ 5 ต.เมือง จ.ชลบุรี 20000"
   },
   stats: {
-    productionThisMonth: 4280.00,
-    recIssued: 3500.00,
-    recSold: 2800.00,
-    recBalance: 700.00,
-    revenue: 4200.00,
-    co2Saved: 842.00,
+    productionThisMonth: 115.00,
+    recIssued: 555.00,
+    recSold: 405.00,
+    recBalance: 110.00,
+    revenue: 810.00,
+    co2Saved: 335.00,
     inverterCount: 2,
-    assetCount: 3,
+    assetCount: 2,
     unit: "kWh"
   },
   assets: [
     { 
       id: '1', 
       meterId: 'PEA-77421', 
-      name: 'Household Solar A', 
+      name: 'Household Solar', 
       type: 'Solar Cell', 
       technology: 'Solar Rooftop',
       capacity: '5.5 kWp', 
-      location: 'Chonburi Site A', 
-      production: 4280, 
+      location: 'Chonburi Site', 
+      production: 115, 
       status: 'Active',
       techSpec: {
         modules: 'Jinko Solar Tiger Pro 540W (10 Panels)',
@@ -43,63 +43,56 @@ export const GLOBAL_DATA = {
       connection: {
         gps: '13.3611° N, 100.9847° E',
         interconnectionPoint: 'PEA Chonburi Area 1 (Low Voltage)',
-        voltage: '232V',
+        voltage: '22-33 KV',
         lastOnline: 'Online'
-      }
+      },
+      monthlyData: [
+        { month: 'พ.ย.', year: '2568', production: 110, sold: 0.11, status: 'ขายสำเร็จ', date: '05/12/2568' },
+        { month: 'ธ.ค.', year: '2568', production: 95, sold: 0.09, status: 'ขายสำเร็จ', date: '10/01/2569' },
+        { month: 'ม.ค.', year: '2569', production: 145, sold: 0.14, status: 'ขายสำเร็จ', date: '08/02/2569' },
+        { month: 'ก.พ.', year: '2569', production: 85, sold: 0.08, status: 'ขายสำเร็จ', date: '12/03/2569' },
+        { month: 'มี.ค.', year: '2569', production: 120, sold: 0.10, status: 'ขายสำเร็จ', date: '09/04/2569' },
+        { month: 'เม.ย.', year: '2569', production: 115, sold: 0, status: 'รอการขาย', date: '-' },
+      ]
     },
     { 
       id: '2', 
       meterId: 'PEA-99231', 
-      name: 'Business Solar B', 
+      name: 'Business Solar', 
       type: 'Solar Cell', 
-      technology: 'Solar Farm',
-      capacity: '12.0 kWp', 
-      location: 'Chonburi Site B', 
-      production: 0, 
-      status: 'Inactive',
+      technology: 'Solar Rooftop',
+      capacity: '10.0 kWp', 
+      location: 'Chonburi Site 2', 
+      production: 1850, 
+      status: 'Active',
       techSpec: {
-        modules: 'Longi Hi-MO 5 545W (22 Panels)',
-        inverter: 'Sungrow SG12RT',
+        modules: 'Longi Hi-MO 5 545W (18 Panels)',
+        inverter: 'Sungrow SG10RT',
         serialNumber: 'SG220300991',
-        cod: '2025-11-20'
+        cod: '2025-08-20'
       },
       connection: {
         gps: '13.3855° N, 101.0123° E',
         interconnectionPoint: 'PEA Chonburi Area 2 (Medium Voltage)',
-        voltage: '0V',
-        lastOnline: 'Offline'
-      }
-    },
-    { 
-      id: '3', 
-      meterId: 'PEA-44312', 
-      name: 'Home Wind C', 
-      type: 'Wind Turbine', 
-      technology: 'Vertical Axis Wind Turbine (VAWT)',
-      capacity: '1.2 kW', 
-      location: 'Chonburi Hill', 
-      production: 450, 
-      status: 'Active',
-      techSpec: {
-        modules: 'Aeolos-V 1.2kW Turbine',
-        inverter: 'Aeolos Grid-on Controller',
-        serialNumber: 'WV3310022',
-        cod: '2026-01-10'
-      },
-      connection: {
-        gps: '13.4012° N, 101.1245° E',
-        interconnectionPoint: 'PEA Chonburi Area 1 (Low Voltage)',
-        voltage: '228V',
+        voltage: '22-33 KV',
         lastOnline: 'Online'
-      }
-    },
+      },
+      monthlyData: [
+        { month: 'พ.ย.', year: '2568', production: 1750, sold: 1.75, status: 'ขายสำเร็จ', date: '05/12/2568' },
+        { month: 'ธ.ค.', year: '2568', production: 1600, sold: 1.60, status: 'ขายสำเร็จ', date: '10/01/2569' },
+        { month: 'ม.ค.', year: '2569', production: 1950, sold: 1.95, status: 'ขายสำเร็จ', date: '08/02/2569' },
+        { month: 'ก.พ.', year: '2569', production: 1550, sold: 1.55, status: 'ขายสำเร็จ', date: '12/03/2569' },
+        { month: 'มี.ค.', year: '2569', production: 1800, sold: 1.80, status: 'ขายสำเร็จ', date: '09/04/2569' },
+        { month: 'เม.ย.', year: '2569', production: 1850, sold: 0, status: 'รอการขาย', date: '-' },
+      ]
+    }
   ],
   chartData: [
-    { name: 'พ.ย.', energy: 4000 },
-    { name: 'ธ.ค.', energy: 3000 },
-    { name: 'ม.ค.', energy: 4280 },
-    { name: 'ก.พ.', energy: 2780 },
-    { name: 'มี.ค.', energy: 1890 },
-    { name: 'เม.ย.', energy: 2390 },
+    { name: 'พ.ย.', energy: 1860 },
+    { name: 'ธ.ค.', energy: 1695 },
+    { name: 'ม.ค.', energy: 2095 },
+    { name: 'ก.พ.', energy: 1635 },
+    { name: 'มี.ค.', energy: 1920 },
+    { name: 'เม.ย.', energy: 1965 },
   ]
 };

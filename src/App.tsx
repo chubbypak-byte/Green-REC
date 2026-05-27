@@ -5,7 +5,6 @@ import { Overview } from './pages/Overview';
 import { Producers } from './pages/Producers';
 import { Certificates } from './pages/Certificates';
 import { CertificateViewer } from './pages/CertificateViewer';
-import { Market } from './pages/Market';
 import { Reports } from './pages/Reports';
 import { Registration } from './pages/Registration';
 import { RegisterAsset } from './pages/RegisterAsset';
@@ -13,6 +12,7 @@ import { Login } from './pages/Login';
 import { Profile } from './pages/Profile';
 import { AssetDetails } from './pages/AssetDetails';
 import { AssetHistory } from './pages/AssetHistory';
+import { Contact } from './pages/Contact';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -39,10 +39,10 @@ export default function App() {
           <Route path="/assets/:id/history" element={<AssetHistory />} />
           <Route path="/certificates" element={<Certificates />} />
           <Route path="/certificates/:id" element={<CertificateViewer />} />
-          <Route path="/market" element={<Market />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/register-asset" element={<RegisterAsset />} />
+          <Route path="/contact" element={<Contact />} />
           {/* Fallback to Dashboard/Overview */}
           <Route path="*" element={<Overview />} />
         </Routes>

@@ -52,7 +52,7 @@ export const CertificateViewer = () => {
            <div className="absolute top-16 right-16 text-right">
               <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Certificate No.</p>
               <p className="text-sm font-mono font-bold text-slate-800 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
-                 {id || 'REC-2024-00X'}
+                 {id || 'REC-2026-00X'}
               </p>
            </div>
            
@@ -70,19 +70,19 @@ export const CertificateViewer = () => {
              
              <div className="space-y-4 max-w-3xl">
                  <p className="text-slate-500 uppercase tracking-widest text-sm font-bold">This is to certify that</p>
-                 <h3 className="text-[40px] font-display font-extrabold text-slate-800 leading-none">Solar Farm Alpha Co., Ltd.</h3>
+                 <h3 className="text-[40px] font-display font-extrabold text-slate-800 leading-none">คุณสมชาย รักพลังงาน</h3>
                  <p className="text-slate-500 uppercase tracking-widest text-sm font-bold">has successfully generated and injected into the grid</p>
              </div>
              
              <div className="py-8 px-16 bg-slate-50/50 rounded-3xl border border-slate-100 shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)]">
-                <span className="text-[64px] font-display font-black text-pea-green leading-none">145</span>
-                <span className="text-2xl font-bold text-slate-600 ml-4 uppercase tracking-[0.2em]">MWh</span>
+                <span className="text-[64px] font-display font-black text-pea-green leading-none">2,095</span>
+                <span className="text-2xl font-bold text-slate-600 ml-4 uppercase tracking-[0.2em]">kWh</span>
              </div>
              
              <p className="text-slate-600 text-lg max-w-2xl leading-loose">
                 of eligible energy from renewable energy sources located at 
                 <strong className="text-slate-900 font-bold"> Chonburi, Thailand</strong> during the period of 
-                <strong className="text-slate-900 font-bold"> February 2024</strong>.
+                <strong className="text-slate-900 font-bold"> January 2026</strong>.
              </p>
              
              <div className="grid grid-cols-2 gap-24 mt-16 w-full max-w-2xl">

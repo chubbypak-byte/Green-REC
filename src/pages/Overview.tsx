@@ -18,7 +18,8 @@ import {
   ArrowDownRight,
   ChevronRight,
   UserCircle,
-  ShieldCheck
+  ShieldCheck,
+  MapPin
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
@@ -50,7 +51,7 @@ const KPICard = ({ title, value, unit, change, icon: Icon, color }: any) => (
   </div>
 );
 
-const ProgressBar = ({ label, value, status }: { label: string, value: number, status: string }) => {
+const ProgressBar = ({ label, value, status, max }: { label: string, value: number, status: string, max: number }) => {
   const getStatusColor = (s: string) => {
     switch (s) {
       case 'verify': return 'bg-amber-400';
@@ -65,12 +66,12 @@ const ProgressBar = ({ label, value, status }: { label: string, value: number, s
     <div className="space-y-2">
       <div className="flex justify-between items-center text-xs">
         <span className="font-semibold text-slate-600">{label}</span>
-        <span className="font-bold text-slate-400">{value} ตัน</span>
+        <span className="font-bold text-slate-400">{value.toLocaleString()} หน่วย (kWh)</span>
       </div>
       <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
         <motion.div 
           initial={{ width: 0 }}
-          animate={{ width: `${(value / 150) * 100}%` }}
+          animate={{ width: `${(value / max) * 100}%` }}
           transition={{ duration: 1, ease: 'easeOut' }}
           className={`h-full ${getStatusColor(status)} rounded-full`}
         />
@@ -87,10 +88,10 @@ export const Overview = () => {
     name: GLOBAL_DATA.user.name,
     id: GLOBAL_DATA.user.id,
     email: GLOBAL_DATA.user.email,
-    assetCount: GLOBAL_DATA.stats.assetCount,
+    assetCount: GLOBAL_DATA.assets.length,
     location: GLOBAL_DATA.user.location,
     houseNo: GLOBAL_DATA.user.houseNo,
-    inverterCount: GLOBAL_DATA.stats.inverterCount
+    inverterCount: GLOBAL_DATA.assets.length
   };
 
   return (
@@ -124,11 +125,7 @@ export const Overview = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8">
-          <div className="flex flex-col gap-1 min-w-0">
-             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">บ้านเลขที่ / สถานที่ติดตั้ง</span>
-             <span className="text-lg font-bold text-slate-900 truncate" title={`${userInfo.houseNo} ${userInfo.location}`}>{userInfo.houseNo} {userInfo.location}</span>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8">
           <div className="flex flex-col gap-1">
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">จำนวนอุปกรณ์ (Asset)</span>
              <div className="flex items-center gap-2">
@@ -140,6 +137,44 @@ export const Overview = () => {
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">จำนวน Inverter</span>
              <span className="text-lg font-bold text-slate-900">{userInfo.inverterCount} เครื่อง</span>
           </div>
+        </div>
+
+        <div className="pt-8">
+            <h4 className="text-sm font-bold text-slate-900 mb-4 whitespace-nowrap overflow-hidden text-ellipsis">ข้อมูลและระยะเวลาสัญญาอุปกรณ์ (5 ปี)</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+               {GLOBAL_DATA.assets.map(asset => {
+                  const codDate = new Date(asset.techSpec.cod);
+                  const endDate = new Date(codDate);
+                  endDate.setFullYear(endDate.getFullYear() + 5);
+                  
+                  return (
+                    <div key={asset.id} className="bg-slate-50 p-4 rounded-2xl flex items-start justify-between border border-slate-100">
+                       <div>
+                          <p className="text-sm font-bold text-slate-900 mb-1">{asset.name}</p>
+                          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-mono mb-2">{asset.meterId}</p>
+                          <a 
+                             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(userInfo.houseNo + ' ' + asset.location)}`}
+                             target="_blank"
+                             rel="noopener noreferrer" 
+                             className="text-xs text-slate-600 mb-4 flex items-center gap-1.5 hover:text-pea-green transition-colors"
+                          >
+                             <MapPin className="w-3 h-3" />บ้านเลขที่ {userInfo.houseNo} {asset.location}
+                          </a>
+                          <div className="flex gap-4">
+                             <div>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">วันที่เริ่มสัญญา (SCOD)</span>
+                                <span className="text-xs font-semibold text-slate-700">{codDate.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                             </div>
+                             <div>
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">วันที่สิ้นสุดสัญญา</span>
+                                <span className="text-xs font-semibold text-pea-green">{endDate.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                  );
+               })}
+            </div>
         </div>
 
         <div className="pt-8">
@@ -195,10 +230,10 @@ export const Overview = () => {
           <p className="text-xs text-slate-400 mb-8 font-medium">ภาพรวมการถือครองใบรับรองทั้งหมดของคุณ</p>
           
           <div className="space-y-6 flex-1">
-            <ProgressBar label="รอการ Verify" value={45} status="verify" />
-            <ProgressBar label="รอการขาย" value={112} status="selling" />
-            <ProgressBar label="ขายแล้ว" value={86} status="sold" />
-            <ProgressBar label="ใช้เพื่อชดเชยตนเอง" value={30} status="offset" />
+            <ProgressBar label="รอการ Verify (เดือนล่าสุด)" value={1965} status="verify" max={10000} />
+            <ProgressBar label="รอการขาย (คงเหลือ)" value={35} status="selling" max={10000} />
+            <ProgressBar label="ขายแล้วสะสม" value={9170} status="sold" max={10000} />
+            <ProgressBar label="ใช้เพื่อชดเชยตนเอง" value={0} status="offset" max={10000} />
           </div>
 
           <button className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-xs hover:bg-slate-100 transition-colors uppercase tracking-widest">

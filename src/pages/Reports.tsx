@@ -13,14 +13,12 @@ import {
 } from 'recharts';
 import { GLOBAL_DATA } from '../constants';
 
-const data = [
-  { month: 'ม.ค.', co2: 120 },
-  { month: 'ก.พ.', co2: 150 },
-  { month: 'มี.ค.', co2: 180 },
-  { month: 'เม.ย.', co2: 240 },
-  { month: 'พ.ค.', co2: 300 },
-  { month: 'มิ.ย.', co2: 450 },
-];
+const data = GLOBAL_DATA.chartData.map(d => ({
+  month: d.name,
+  co2: d.energy * 0.5
+}));
+
+const totalCo2 = data.reduce((sum, item) => sum + item.co2, 0);
 
 export const Reports = () => {
   const navigate = useNavigate();
@@ -99,14 +97,14 @@ export const Reports = () => {
           <div className="relative z-10 space-y-6">
             <div className="flex items-center gap-2 px-4 py-1.5 bg-white/10 rounded-full w-fit">
               <Leaf className="w-4 h-4 text-emerald-400" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Impact Summary 2024</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-200">Impact Summary 2025-2026</span>
             </div>
             
             <div>
               <p className="text-emerald-100/70 font-display text-lg">คุณช่วยลดการปล่อย CO₂ ไปแล้วทั้งหมด</p>
               <h2 className="text-8xl font-display font-extrabold flex items-baseline gap-4 mt-2">
-                {GLOBAL_DATA.stats.co2Saved}
-                <span className="text-3xl font-bold opacity-40">ตัน / CO₂</span>
+                {totalCo2.toLocaleString()}
+                <span className="text-3xl font-bold opacity-40">กิโลกรัม / CO₂</span>
               </h2>
             </div>
 
@@ -114,21 +112,21 @@ export const Reports = () => {
                <div className="space-y-2">
                  <div className="flex items-center gap-2 text-emerald-400">
                     <TreeDeciduous className="w-5 h-5" />
-                    <span className="text-xl font-bold">124,500</span>
+                    <span className="text-xl font-bold">{Math.round(totalCo2 / 20).toLocaleString()}</span>
                  </div>
                  <p className="text-[10px] uppercase font-bold text-emerald-100/50 leading-relaxed">เทียบเท่าการปลูกต้นไม้ (ต้น)</p>
                </div>
                <div className="space-y-2">
                  <div className="flex items-center gap-2 text-emerald-400">
                     <Wind className="w-5 h-5" />
-                    <span className="text-xl font-bold">8,240</span>
+                    <span className="text-xl font-bold">{Math.round(totalCo2 / 2.3).toLocaleString()}</span>
                  </div>
-                 <p className="text-[10px] uppercase font-bold text-emerald-100/50 leading-relaxed">ชดเชยการใช้รถยนต์ (ลิตร)</p>
+                 <p className="text-[10px] uppercase font-bold text-emerald-100/50 leading-relaxed">ชดเชยการใช้น้ำมัน (ลิตร)</p>
                </div>
                <div className="space-y-2">
                  <div className="flex items-center gap-2 text-emerald-400">
                     <CloudRain className="w-5 h-5" />
-                    <span className="text-xl font-bold">42.5</span>
+                    <span className="text-xl font-bold">{(totalCo2 * 0.05).toFixed(1)}</span>
                  </div>
                  <p className="text-[10px] uppercase font-bold text-emerald-100/50 leading-relaxed">การกักเก็บนํ้าฝนตามธรรมชาติ (ม.³)</p>
                </div>
@@ -140,9 +138,9 @@ export const Reports = () => {
           <h3 className="text-xl font-display font-bold text-slate-900 mb-8">Green Energy Mix</h3>
           <div className="space-y-8 flex-1">
             {[
-              { type: 'Solar', pct: 65, color: 'bg-emerald-500' },
-              { type: 'Wind', pct: 20, color: 'bg-emerald-700' },
-              { type: 'Hydro', pct: 15, color: 'bg-emerald-900' },
+              { type: 'Solar', pct: 100, color: 'bg-emerald-500' },
+              { type: 'Wind', pct: 0, color: 'bg-emerald-700' },
+              { type: 'Hydro', pct: 0, color: 'bg-emerald-900' },
             ].map(item => (
               <div key={item.type} className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -160,13 +158,7 @@ export const Reports = () => {
               </div>
             ))}
           </div>
-          <button 
-            onClick={() => navigate('/certificates')}
-            className="mt-10 group flex items-center justify-center gap-3 w-full py-5 bg-pea-green text-white rounded-3xl font-bold text-sm tracking-widest uppercase hover:bg-emerald-800 transition-all shadow-xl shadow-emerald-900/10"
-          >
-            ขอรับใบ Certificate ฉบับเต็ม
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+
         </div>
       </div>
 
@@ -175,7 +167,7 @@ export const Reports = () => {
            <h3 className="text-xl font-display font-bold text-slate-900">Carbon Avoided Trend</h3>
            <div className="flex gap-4">
               <span className="flex items-center gap-2 text-xs font-bold text-slate-400">
-                <div className="w-2 h-2 rounded-full bg-pea-emerald"></div> 2024 Data
+                <div className="w-2 h-2 rounded-full bg-pea-emerald"></div> 2025-2026 Data
               </span>
            </div>
         </div>

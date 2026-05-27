@@ -19,15 +19,11 @@ export const AssetHistory = () => {
   const navigate = useNavigate();
   const asset = GLOBAL_DATA.assets.find(a => a.id === id);
 
-  // Mock historical data for the specific asset
-  const monthlyData = [
-    { month: 'ม.ค.', production: 450, sold: 400, revenue: 50000 },
-    { month: 'ก.พ.', production: 520, sold: 450, revenue: 56250 },
-    { month: 'มี.ค.', production: 610, sold: 580, revenue: 72500 },
-    { month: 'เม.ย.', production: 550, sold: 500, revenue: 62500 },
-    { month: 'พ.ค.', production: 480, sold: 420, revenue: 52500 },
-    { month: 'มิ.ย.', production: 420, sold: 380, revenue: 47500 },
-  ];
+  const monthlyData = asset?.monthlyData || [];
+
+  const totalProduction = monthlyData.reduce((sum, item) => sum + item.production, 0);
+  const totalSold = monthlyData.reduce((sum, item) => sum + item.sold, 0);
+  const totalRevenue = totalSold * 9;
 
   if (!asset) {
     return (
@@ -59,8 +55,7 @@ export const AssetHistory = () => {
         </div>
       </div>
 
-      {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100">
            <div className="flex items-center gap-3 mb-4">
               <div className="p-2.5 bg-emerald-50 text-pea-green rounded-xl">
@@ -68,7 +63,7 @@ export const AssetHistory = () => {
               </div>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">ผลิตสะสม (Total Gen)</span>
            </div>
-           <p className="text-3xl font-display font-bold text-slate-900">3,030 <span className="text-sm font-sans text-slate-400">kWh</span></p>
+           <p className="text-3xl font-display font-bold text-slate-900">{totalProduction.toLocaleString()} <span className="text-sm font-sans text-slate-400">kWh</span></p>
            <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
               <TrendingUp className="w-3 h-3 text-emerald-500" />
               <span className="text-emerald-500 font-bold">+8%</span> จากช่วงเวลาที่แล้ว
@@ -82,9 +77,9 @@ export const AssetHistory = () => {
               </div>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">ขายสะสม (Total Sold)</span>
            </div>
-           <p className="text-3xl font-display font-bold text-slate-900">2,730 <span className="text-sm font-sans text-slate-400">RECs</span></p>
+           <p className="text-3xl font-display font-bold text-slate-900">{totalSold.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 3 })} <span className="text-sm font-sans text-slate-400">RECs</span></p>
            <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
-              <span className="text-slate-400 font-bold tracking-tight">Efficiency: 90.1%</span>
+              <span className="text-slate-400 font-bold tracking-tight">Efficiency: 83.5%</span>
            </p>
         </div>
 
@@ -95,9 +90,9 @@ export const AssetHistory = () => {
               </div>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">รายได้รวม (Total Revenue)</span>
            </div>
-           <p className="text-3xl font-display font-bold text-slate-900">฿341,250</p>
+           <p className="text-3xl font-display font-bold text-slate-900">฿{totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
            <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
-              <span className="text-emerald-500 font-bold">Avg: ฿125 / REC</span>
+              <span className="text-emerald-500 font-bold">Avg: ฿9 / REC</span>
            </p>
         </div>
       </div>
@@ -175,28 +170,34 @@ export const AssetHistory = () => {
 
       {/* History Table */}
       <div className="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100 space-y-6">
-        <h3 className="text-xl font-display font-bold text-slate-900">ตารางประวัติรายเดือน</h3>
+        <h3 className="text-xl font-display font-bold text-slate-900">ตารางประวัติการผลิตไฟฟ้ารายเดือน</h3>
         <div className="overflow-hidden border border-slate-50 rounded-2xl">
            <table className="w-full text-left">
               <thead className="bg-slate-50/50">
                  <tr>
                     <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">เดือน</th>
                     <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-pea-green">ผลิตได้ (kWh)</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">โอนออก REC (Unit)</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-emerald-600">มูลค่าที่ขายได้ (THB)</th>
-                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">สถานะ</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-blue-500">ผลิตได้ (REC)</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-purple-500">ขายแล้ว (REC)</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-emerald-600">มูลค่า (THB)</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">สถานะ</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">วันที่ขายสำเร็จ</th>
                  </tr>
               </thead>
               <tbody>
-                 {monthlyData.reverse().map((data, idx) => (
-                    <tr key={idx} className="border-t border-slate-50 hover:bg-slate-50/50 transition-colors">
-                       <td className="px-6 py-5 font-bold text-slate-700">{data.month} 2568</td>
+                 {[...monthlyData].reverse().map((data, idx) => (
+                    <tr key={idx} className="border-t border-slate-50 hover:bg-slate-50/50 transition-colors whitespace-nowrap">
+                       <td className="px-6 py-5 font-bold text-slate-700">{data.month} {data.year}</td>
                        <td className="px-6 py-5 text-pea-green font-bold">{data.production.toLocaleString()}</td>
-                       <td className="px-6 py-5 font-medium text-slate-600">{data.sold.toLocaleString()}</td>
-                       <td className="px-6 py-5 text-emerald-600 font-bold">฿{data.revenue.toLocaleString()}</td>
-                       <td className="px-6 py-5 text-right">
-                          <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-bold uppercase">Settled</span>
+                       <td className="px-6 py-5 text-blue-500 font-bold">{(data.production / 1000).toFixed(3)}</td>
+                       <td className="px-6 py-5 font-medium text-slate-600">{data.sold > 0 ? data.sold.toFixed(3) : '-'}</td>
+                       <td className="px-6 py-5 text-emerald-600 font-bold">฿{(data.sold * 9).toFixed(2)}</td>
+                       <td className="px-6 py-5 text-center">
+                          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase ${data.status === 'ขายสำเร็จ' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
+                             {data.status}
+                          </span>
                        </td>
+                       <td className="px-6 py-5 text-right font-medium text-slate-500">{data.date}</td>
                     </tr>
                  ))}
               </tbody>
