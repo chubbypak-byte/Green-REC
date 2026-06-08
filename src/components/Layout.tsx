@@ -12,7 +12,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   if (isAuthPage) {
     return (
-      <div className="min-h-screen bg-slate-50 font-sans">
+      <div className="min-h-screen bg-gradient-to-b from-[#A1D7B8] to-slate-50 font-sans">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -29,7 +29,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans flex">
+    <div className="min-h-screen bg-gradient-to-b from-[#A1D7B8] to-slate-50 font-sans flex">
       <Sidebar />
       
       <main className="flex-1 ml-72">
