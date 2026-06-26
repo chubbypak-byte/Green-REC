@@ -7,9 +7,11 @@ import {
   Zap
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useAppContext } from '../context/AppContext';
 
 export const RegisterAsset = () => {
   const navigate = useNavigate();
+  const { addAsset, globalData } = useAppContext();
   const [formData, setFormData] = useState({
     deviceType: 'solar',
     capacity: '',
@@ -24,6 +26,33 @@ export const RegisterAsset = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => {
+      // Simulate adding a new asset
+      const newAsset = {
+        id: Math.random().toString(36).substr(2, 9),
+        meterId: `PEA-${Math.floor(Math.random() * 90000) + 10000}`,
+        name: `New ${formData.deviceType.toUpperCase()} Asset`,
+        type: formData.deviceType === 'solar' ? 'Solar Cell' : formData.deviceType === 'wind' ? 'Wind Turbine' : 'Hydro Power',
+        technology: formData.deviceType === 'solar' ? 'Solar Rooftop' : 'Other',
+        capacity: `${formData.capacity} kWp`,
+        location: globalData.user.location,
+        production: 0,
+        status: 'Active',
+        techSpec: {
+          modules: 'Standard Modules',
+          inverter: formData.inverterBrand,
+          serialNumber: formData.serialNumber,
+          cod: formData.scod
+        },
+        connection: {
+          gps: '13.3611° N, 100.9847° E',
+          interconnectionPoint: 'PEA Area',
+          voltage: '22-33 KV',
+          lastOnline: 'Online'
+        },
+        monthlyData: []
+      };
+      
+      addAsset(newAsset);
       setIsSubmitting(false);
       setIsSuccess(true);
     }, 1500);

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Mail, Lock, Building2, Phone, CheckCircle, Save, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 
 export const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const isEditMode = queryParams.get('mode') === 'edit';
+  const { globalData, updateUser } = useAppContext();
 
   const [isSaved, setIsSaved] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,31 +44,31 @@ export const Registration = () => {
   useEffect(() => {
     if (isEditMode) {
       // Split name if possible
-      const nameParts = GLOBAL_DATA.user.name.split(' ');
+      const nameParts = globalData.user.name.split(' ');
       const prefix = nameParts[0]?.startsWith('คุณ') ? 'คุณ' : '';
       const firstName = nameParts[0]?.replace('คุณ', '') || '';
       const lastName = nameParts[1] || '';
 
       setFormData(prev => ({
         ...prev,
-        email: GLOBAL_DATA.user.email,
-        confirmEmail: GLOBAL_DATA.user.email,
-        idNumber: GLOBAL_DATA.user.id,
+        email: globalData.user.email,
+        confirmEmail: globalData.user.email,
+        idNumber: globalData.user.id,
         prefix: prefix,
         firstName: firstName,
         lastName: lastName,
         address: {
           ...prev.address,
-          houseNo: GLOBAL_DATA.user.houseNo.split(' ')[0] || '',
-          moo: GLOBAL_DATA.user.houseNo.match(/หมู่ (\d+)/)?.[1] || '',
+          houseNo: globalData.user.houseNo.split(' ')[0] || '',
+          moo: globalData.user.houseNo.match(/หมู่ (\d+)/)?.[1] || '',
           province: 'chonburi',
           district: 'เมืองชลบุรี',
           subDistrict: 'เมือง',
-          zipCode: GLOBAL_DATA.user.zipCode
+          zipCode: globalData.user.zipCode
         }
       }));
     }
-  }, [isEditMode]);
+  }, [isEditMode, globalData.user]);
 
   const districts: Record<string, string[]> = {
     'bangkok': ['พระนคร', 'ดุสิต', 'ปทุมวัน', 'บางรัก', 'ห้วยขวาง', 'สุขุมวิท', 'จตุจักร'],
@@ -89,6 +90,41 @@ export const Registration = () => {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Format full address
+    const { houseNo, moo, alley, soi, road, village, roomNo, floor, province, district, subDistrict, zipCode } = formData.address;
+    const addressParts = [];
+    if (houseNo) addressParts.push(houseNo);
+    if (moo) addressParts.push(`หมู่ ${moo}`);
+    if (village) addressParts.push(`หมู่บ้าน ${village}`);
+    if (roomNo) addressParts.push(`ห้อง ${roomNo}`);
+    if (floor) addressParts.push(`ชั้น ${floor}`);
+    if (soi) addressParts.push(`ซอย ${soi}`);
+    if (alley) addressParts.push(`ตรอก ${alley}`);
+    if (road) addressParts.push(`ถนน ${road}`);
+    if (subDistrict) addressParts.push(`ต.${subDistrict}`);
+    if (district) addressParts.push(`อ.${district}`);
+    
+    // Find province label
+    let provinceLabel = province;
+    if (province === 'bangkok') provinceLabel = 'กรุงเทพมหานคร';
+    else if (province === 'chonburi') provinceLabel = 'ชลบุรี';
+    else if (province === 'chiangmai') provinceLabel = 'เชียงใหม่';
+    else if (province === 'rayong') provinceLabel = 'ระยอง';
+
+    if (provinceLabel) addressParts.push(`จ.${provinceLabel}`);
+    if (zipCode) addressParts.push(zipCode);
+
+    updateUser({
+      name: `${formData.prefix}${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email,
+      id: formData.idNumber || globalData.user.id,
+      houseNo: `${houseNo}${moo ? ` หมู่ ${moo}` : ''}`,
+      location: `ต.${subDistrict || 'เมือง'} จ.${provinceLabel || 'ชลบุรี'}`,
+      zipCode: zipCode,
+      fullAddress: addressParts.join(' ')
+    });
+
     setIsSaved(true);
     setTimeout(() => {
        setIsSaved(false);

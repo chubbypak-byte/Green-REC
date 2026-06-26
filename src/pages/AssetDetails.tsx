@@ -15,13 +15,14 @@ import {
   Settings,
   Power
 } from 'lucide-react';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 
 export const AssetDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const asset = GLOBAL_DATA.assets.find(a => a.id === id);
+  const { globalData } = useAppContext();
+  const asset = globalData.assets.find(a => a.id === id);
   const [currentStatus, setCurrentStatus] = useState(asset?.status || 'Active');
 
   if (!asset) {

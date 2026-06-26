@@ -11,19 +11,20 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
-import { GLOBAL_DATA } from '../constants';
-
-const data = GLOBAL_DATA.chartData.map(d => ({
-  month: d.name,
-  co2: d.energy * 0.5
-}));
-
-const totalCo2 = data.reduce((sum, item) => sum + item.co2, 0);
+import { useAppContext } from '../context/AppContext';
 
 export const Reports = () => {
   const navigate = useNavigate();
+  const { globalData } = useAppContext();
   const [downloading, setDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+
+  const data = globalData.chartData.map(d => ({
+    month: d.name,
+    co2: d.energy * 0.5
+  }));
+
+  const totalCo2 = data.reduce((sum, item) => sum + item.co2, 0);
 
   const handleDownload = () => {
     setDownloading(true);
@@ -68,10 +69,10 @@ export const Reports = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { label: 'ผลิตได้เพิ่มเดือนนี้', value: GLOBAL_DATA.stats.productionThisMonth, unit: GLOBAL_DATA.stats.unit, icon: <Leaf className="w-5 h-5 text-emerald-500" />, sub: '+12% จากเดือนที่แล้ว' },
-          { label: 'ลงทะเบียน REC', value: GLOBAL_DATA.stats.recIssued, unit: GLOBAL_DATA.stats.unit, icon: <ShieldCheck className="w-5 h-5 text-blue-500" />, sub: 'ดำเนินการสำเร็จแล้ว' },
-          { label: 'ขายได้ทั้งหมด', value: GLOBAL_DATA.stats.recSold, unit: GLOBAL_DATA.stats.unit, icon: <ArrowRight className="w-5 h-5 text-purple-500" />, sub: `รายได้ ${GLOBAL_DATA.stats.revenue} THB` },
-          { label: 'ยอดคงเหลือ', value: GLOBAL_DATA.stats.recBalance, unit: GLOBAL_DATA.stats.unit, icon: <Clock className="w-5 h-5 text-amber-500" />, sub: 'รอดำเนินการขาย' }
+          { label: 'ผลิตได้เพิ่มเดือนนี้', value: globalData.stats.productionThisMonth, unit: globalData.stats.unit, icon: <Leaf className="w-5 h-5 text-emerald-500" />, sub: '+12% จากเดือนที่แล้ว' },
+          { label: 'ลงทะเบียน REC', value: globalData.stats.recIssued, unit: globalData.stats.unit, icon: <ShieldCheck className="w-5 h-5 text-blue-500" />, sub: 'ดำเนินการสำเร็จแล้ว' },
+          { label: 'ขายได้ทั้งหมด', value: globalData.stats.recSold, unit: globalData.stats.unit, icon: <ArrowRight className="w-5 h-5 text-purple-500" />, sub: `รายได้ ${globalData.stats.revenue} THB` },
+          { label: 'ยอดคงเหลือ', value: globalData.stats.recBalance, unit: globalData.stats.unit, icon: <Clock className="w-5 h-5 text-amber-500" />, sub: 'รอดำเนินการขาย' }
         ].map((stat, i) => (
           <div key={i} className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 space-y-4">
              <div className="flex items-center justify-between">

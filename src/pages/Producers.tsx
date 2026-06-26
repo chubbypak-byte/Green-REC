@@ -14,25 +14,25 @@ import {
   Power,
   ChevronRight
 } from 'lucide-react';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const Producers = () => {
   const navigate = useNavigate();
-  const [assets, setAssets] = useState(GLOBAL_DATA.assets);
+  const { globalData, updateAsset, removeAsset } = useAppContext();
+  const assets = globalData.assets;
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   const toggleStatus = (id: string) => {
-     setAssets(prev => prev.map(asset => 
-        asset.id === id 
-           ? { ...asset, status: asset.status === 'Active' ? 'Inactive' : 'Active' }
-           : asset
-     ));
+     const asset = assets.find(a => a.id === id);
+     if (asset) {
+       updateAsset(id, { status: asset.status === 'Active' ? 'Inactive' : 'Active' });
+     }
   };
 
   const handleDelete = (id: string) => {
      if (window.confirm('คุณต้องการลบอุปกรณ์นี้ใช่หรือไม่? ข้อมูลทั้งหมดจะถูกลบถาวร')) {
-        setAssets(prev => prev.filter(a => a.id !== id));
+        removeAsset(id);
         setActiveMenu(null);
      }
   };
@@ -160,7 +160,7 @@ export const Producers = () => {
                  </div>
                  <div>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">ผลิตได้/เดือน</p>
-                    <p className="text-lg font-bold text-pea-green">{asset.production.toLocaleString()} {GLOBAL_DATA.stats.unit}</p>
+                    <p className="text-lg font-bold text-pea-green">{asset.production.toLocaleString()} {globalData.stats.unit}</p>
                  </div>
               </div>
 

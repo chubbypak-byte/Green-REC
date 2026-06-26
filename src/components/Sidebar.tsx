@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -28,6 +28,7 @@ const navItems = [
 
 export const Sidebar = () => {
   const navigate = useNavigate();
+  const { globalData } = useAppContext();
 
   return (
     <aside className="w-72 h-screen bg-gradient-to-b from-[#A1D7B8] to-slate-50 border-r border-emerald-200/50 flex flex-col fixed left-0 top-0 z-50">
@@ -70,7 +71,7 @@ export const Sidebar = () => {
 
       <div className="mt-auto p-6 border-t border-emerald-200/50 bg-white/20">
         <NavLink 
-          to="/"
+          to="/profile"
           className={({ isActive }) => cn(
             "flex items-center gap-4 mb-4 p-2 rounded-xl transition-all",
             isActive ? "bg-white/40" : "hover:bg-white/30"
@@ -80,7 +81,7 @@ export const Sidebar = () => {
              <UserCircle className="w-6 h-6 text-pea-green" />
           </div>
           <div className="flex flex-col text-slate-700">
-            <span className="text-sm font-semibold truncate max-w-[120px] text-slate-900">{GLOBAL_DATA.user.name}</span>
+            <span className="text-sm font-semibold truncate max-w-[120px] text-slate-900">{globalData.user.name}</span>
             <span className="text-[10px] font-bold tracking-tighter uppercase text-pea-green">My Account</span>
           </div>
         </NavLink>

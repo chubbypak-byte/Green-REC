@@ -12,26 +12,27 @@ import {
   Smartphone
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 
 export const Profile = () => {
   const navigate = useNavigate();
+  const { globalData } = useAppContext();
   
   const user = {
-    name: GLOBAL_DATA.user.name,
-    id: GLOBAL_DATA.user.id,
-    email: GLOBAL_DATA.user.email,
-    phone: GLOBAL_DATA.user.phone,
-    address: GLOBAL_DATA.user.fullAddress,
-    joinDate: GLOBAL_DATA.user.joinDate,
-    hasAssets: GLOBAL_DATA.stats.assetCount > 0
+    name: globalData.user.name,
+    id: globalData.user.id,
+    email: globalData.user.email,
+    phone: globalData.user.phone,
+    address: globalData.user.fullAddress,
+    joinDate: globalData.user.joinDate,
+    hasAssets: globalData.stats.assetCount > 0
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-20">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-display font-extrabold text-slate-900">ประวัติภาพรวม (Profile Overview)</h1>
-        <button className="p-3 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-pea-green transition-colors">
+        <button onClick={() => navigate('/registration?mode=edit')} className="p-3 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-pea-green transition-colors">
           <Settings className="w-5 h-5" />
         </button>
       </div>
@@ -103,10 +104,10 @@ export const Profile = () => {
               {user.hasAssets ? (
                 <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-pea-green shadow-sm text-xl font-bold">{GLOBAL_DATA.assets.length}</div>
+                    <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-pea-green shadow-sm text-xl font-bold">{globalData.assets.length}</div>
                     <div>
                       <p className="font-bold text-slate-900">อุปกรณ์ที่ลงทะเบียนแล้ว</p>
-                      <p className="text-xs text-slate-500">ระบบตรวจพบอุปกรณ์ผลิตไฟฟ้า {GLOBAL_DATA.assets.length} รายการ</p>
+                      <p className="text-xs text-slate-500">ระบบตรวจพบอุปกรณ์ผลิตไฟฟ้า {globalData.assets.length} รายการ</p>
                     </div>
                   </div>
                   <button onClick={() => navigate('/producers')} className="px-6 py-2 bg-pea-green text-white rounded-xl font-bold text-xs uppercase tracking-widest">
@@ -138,7 +139,7 @@ export const Profile = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-3xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="bg-white p-6 rounded-3xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow cursor-pointer" onClick={() => navigate('/')}>
               <div className="p-3 bg-blue-50 text-blue-500 rounded-2xl"><Calendar className="w-5 h-5" /></div>
               <div>
                 <p className="font-bold text-slate-900 text-sm">ประวัติการใช้งาน</p>

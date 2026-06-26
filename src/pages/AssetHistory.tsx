@@ -10,14 +10,15 @@ import {
   DollarSign,
   ArrowUpRight
 } from 'lucide-react';
-import { GLOBAL_DATA } from '../constants';
+import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 
 export const AssetHistory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const asset = GLOBAL_DATA.assets.find(a => a.id === id);
+  const { globalData } = useAppContext();
+  const asset = globalData.assets.find(a => a.id === id);
 
   const monthlyData = asset?.monthlyData || [];
 

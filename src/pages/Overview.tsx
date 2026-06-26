@@ -23,9 +23,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { GLOBAL_DATA } from '../constants';
-
-const data = GLOBAL_DATA.chartData;
+import { useAppContext } from '../context/AppContext';
 
 const KPICard = ({ title, value, unit, change, icon: Icon, color }: any) => (
   <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-2 relative overflow-hidden group hover:shadow-md transition-all">
@@ -82,16 +80,18 @@ const ProgressBar = ({ label, value, status, max }: { label: string, value: numb
 
 export const Overview = () => {
   const navigate = useNavigate();
+  const { globalData } = useAppContext();
+  const data = globalData.chartData;
 
-  // Use data from GLOBAL_DATA
+  // Use data from AppContext
   const userInfo = {
-    name: GLOBAL_DATA.user.name,
-    id: GLOBAL_DATA.user.id,
-    email: GLOBAL_DATA.user.email,
-    assetCount: GLOBAL_DATA.assets.length,
-    location: GLOBAL_DATA.user.location,
-    houseNo: GLOBAL_DATA.user.houseNo,
-    inverterCount: GLOBAL_DATA.assets.length
+    name: globalData.user.name,
+    id: globalData.user.id,
+    email: globalData.user.email,
+    assetCount: globalData.assets.length,
+    location: globalData.user.location,
+    houseNo: globalData.user.houseNo,
+    inverterCount: globalData.assets.length
   };
 
   return (
@@ -112,7 +112,7 @@ export const Overview = () => {
                 <span className="text-[10px] font-bold uppercase tracking-widest">ชื่อผู้ใช้ไฟฟ้า</span>
              </div>
              <span className="text-lg font-bold text-slate-900 truncate" title={userInfo.name}>{userInfo.name}</span>
-             <span className="text-xs font-medium text-pea-green bg-emerald-50 w-fit px-2 py-0.5 rounded-md mt-1">{GLOBAL_DATA.user.role}</span>
+             <span className="text-xs font-medium text-pea-green bg-emerald-50 w-fit px-2 py-0.5 rounded-md mt-1">{globalData.user.role}</span>
           </div>
           <div className="flex flex-col gap-1 min-w-0">
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">เลขประจำตัว</span>
@@ -121,7 +121,7 @@ export const Overview = () => {
           <div className="flex flex-col gap-1 min-w-0">
              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">ติดต่อ</span>
              <span className="text-lg font-bold text-slate-900 truncate">{userInfo.email}</span>
-             <span className="text-sm font-medium text-slate-500">{GLOBAL_DATA.user.phone}</span>
+             <span className="text-sm font-medium text-slate-500">{globalData.user.phone}</span>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export const Overview = () => {
         <div className="pt-8">
             <h4 className="text-sm font-bold text-slate-900 mb-4 whitespace-nowrap overflow-hidden text-ellipsis">ข้อมูลและระยะเวลาสัญญาอุปกรณ์ (5 ปี)</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               {GLOBAL_DATA.assets.map(asset => {
+               {globalData.assets.map(asset => {
                   const codDate = new Date(asset.techSpec.cod);
                   const endDate = new Date(codDate);
                   endDate.setFullYear(endDate.getFullYear() + 5);
@@ -185,7 +185,7 @@ export const Overview = () => {
                   </div>
                   <div>
                      <p className="text-xs font-bold text-slate-900">ตัวตนได้รับการยืนยันแล้ว (Identity Verified)</p>
-                     <p className="text-[10px] text-slate-500">สมัครสมาชิกเมื่อ: {GLOBAL_DATA.user.joinDate}</p>
+                     <p className="text-[10px] text-slate-500">สมัครสมาชิกเมื่อ: {globalData.user.joinDate}</p>
                   </div>
                </div>
                <div className="flex items-center gap-2">
@@ -236,7 +236,7 @@ export const Overview = () => {
             <ProgressBar label="ใช้เพื่อชดเชยตนเอง" value={0} status="offset" max={10000} />
           </div>
 
-          <button className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-xs hover:bg-slate-100 transition-colors uppercase tracking-widest">
+          <button onClick={() => navigate('/certificates')} className="mt-8 flex items-center justify-center gap-2 w-full py-4 bg-slate-50 text-slate-600 rounded-2xl font-bold text-xs hover:bg-slate-100 transition-colors uppercase tracking-widest">
             ดูรายละเอียดทั้งหมด
             <ChevronRight className="w-4 h-4" />
           </button>
